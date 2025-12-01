@@ -36,7 +36,12 @@ const QUARTZ_RATES = {
   let oniLevels = [
     { level: 1, quartz: 5600, upgradeTime: "00:00:00" },
     { level: 2, quartz: 11200, upgradeTime: "00:08:38" },
-    { level: 3, quartz: 22400, upgradeTime: "01:35:46" }
+    { level: 3, quartz: 22400, upgradeTime: "01:35:46" },
+    { level: 4, quartz: 12345, upgradeTime: "00:00:00" },
+    { level: 5, quartz: 89600, upgradeTime: "02:33:00" },
+    { level: 6, quartz: 125400, upgradeTime: "03:01:24" },
+    { level: 7, quartz: 163100, upgradeTime: "02:50:07" },
+    { level: 8, quartz: 195700, upgradeTime: "03:14:13" }
   ];
   
   const ONI_STORAGE_KEY = "oniSealHallLevels_v1";
@@ -261,3 +266,4 @@ const QUARTZ_RATES = {
     document.getElementById("addLevelBtn").addEventListener("click", handleAddOrUpdateLevel);
   });
   
+
