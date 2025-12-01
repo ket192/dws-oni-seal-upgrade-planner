@@ -6,15 +6,20 @@ body {
     color: #f5f5f5;
   }
   
+  html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+  } 
+
   .container {
     max-width: 900px;
     margin: 0 auto;
     background: rgba(15, 20, 40, 0.9);
-    padding: 20px 24px;
+    padding: 20px 16px;
     border-radius: 12px;
     box-shadow: 0 2px 16px rgba(0,0,0,0.6);
     backdrop-filter: blur(12px);
-  }
+  }  
   
   h1 {
     font-size: 1.8rem;
@@ -111,13 +116,15 @@ body {
     border-radius: 10px;
     background: rgba(15, 25, 55, 0.9);
     border: 1px solid rgba(127,156,255,0.25);
+    overflow-x: auto;          /* ⬅ allows sideways scroll on small screens */
   }
   
-  /* Optional: extra styling for the table inside results */
+  /* Ensure the inner table doesn’t compress too much */
   .results table {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.9rem;
+    min-width: 480px;          /* ⬅ stops it getting too cramped on phones */
   }
   
   .results th,
@@ -141,7 +148,7 @@ body {
     margin-top: 0.75rem;
     font-size: 0.85rem;
     color: #d0d4e0;
-  } 
+  }  
   
   .note {
     font-size: 0.8rem;
@@ -218,5 +225,63 @@ body {
     font-weight: 600;
     letter-spacing: 0.5px;
   }
+
+  @media (max-width: 600px) {
+    body {
+      padding: 12px;
+    }
+  
+    .container {
+      padding: 16px 12px;
+      border-radius: 10px;
+    }
+  
+    h1 {
+      font-size: 1.4rem;
+    }
+  
+    h2 {
+      font-size: 1.05rem;
+    }
+  
+    /* Stack everything in one column on narrow screens */
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  
+    /* Make buttons big & thumb-friendly */
+    button {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 1rem;
+    }
+  
+    /* Slightly larger inputs on mobile */
+    input[type="number"],
+    input[type="text"],
+    select {
+      font-size: 1rem;
+      padding: 10px 12px;
+    }
+  
+    .factory-card {
+      padding: 10px 10px;
+    }
+  }
+  
+  @media (max-width: 400px) {
+    h1 {
+      font-size: 1.25rem;
+    }
+  
+    .factory-title {
+      font-size: 0.9rem;
+    }
+  
+    .factory-title input[type="checkbox"] {
+      transform: scale(1.1);   /* a bit easier to tap */
+    }
+  }
+  
   
   
