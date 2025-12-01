@@ -130,12 +130,17 @@ const QUARTZ_RATES = {
     const resultsDiv = document.getElementById("results");
     resultsDiv.style.display = "block";
   
-    const totalRate = getTotalQuartzPerHour(); // per hour
+    const totalRate = getTotalQuartzPerHour(); // base production per hour
+  
+    // Season Pass handling
+    const seasonPassCheckbox = document.getElementById("seasonPass");
+    const hasSeasonPass = seasonPassCheckbox && seasonPassCheckbox.checked;
+    const effectiveRate = hasSeasonPass ? Math.round(totalRate * 1.2) : totalRate;
+  
     const currentLevel = parseInt(document.getElementById("currentLevel").value, 10) || 0;
     const currentQuartz = Math.max(0, parseInt(document.getElementById("currentQuartz").value, 10) || 0);
     const nextLevel = currentLevel + 1;
   
-    // No production = nothing to calculate
     if (totalRate <= 0) {
       resultsDiv.innerHTML = `
         <div class="results-notes">
@@ -168,7 +173,8 @@ const QUARTZ_RATES = {
     if (remainingQuartzRaw <= 0) {
       notes = "✅ You already have enough quartz to start this upgrade.";
     } else {
-      const hoursNeeded = remainingQuartz / totalRate;
+      // Use effectiveRate (with Season Pass bonus if enabled)
+      const hoursNeeded = remainingQuartz / effectiveRate;
       const minutesNeeded = Math.ceil(hoursNeeded * 60);
   
       farmingTimeDisplay = formatDurationFromMinutes(minutesNeeded);
@@ -177,18 +183,19 @@ const QUARTZ_RATES = {
       const readyTime = new Date(now.getTime() + minutesNeeded * 60 * 1000);
       readyTimeDisplay = `${readyTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} on ${readyTime.toLocaleDateString()}`;
   
-      notes = `Estimated farming time: ~${farmingTimeDisplay}<br>If you start now: ready around ${readyTimeDisplay}`;
+      const bonusText = hasSeasonPass ? " (including 20% Season Pass bonus)" : "";
+      notes = `Estimated farming time: ~${farmingTimeDisplay}${bonusText}<br>If you start now: ready around ${readyTimeDisplay}`;
     }
   
     const rows = [
-      { label: "Total quartz production", value: `${totalRate.toLocaleString()} / hour` },
+      { label: "Base quartz production", value: `${totalRate.toLocaleString()} / hour` },
+      { label: "Season Pass purchased", value: hasSeasonPass ? "Yes (+20% production)" : "No" },
+      { label: "Effective quartz production", value: `${effectiveRate.toLocaleString()} / hour` },
       { label: "Current Oni Seal Hall level", value: currentLevel },
       { label: "Target level", value: nextLevel },
       { label: "Current quartz stored", value: currentQuartz.toLocaleString() },
       { label: "Next level quartz requirement", value: `${requiredQuartz.toLocaleString()} (upgrade time in game: ${levelData.upgradeTime || "unknown"})` },
-      { label: "Quartz still needed", value: remainingQuartz.toLocaleString() },
-      { label: "Estimated farming time", value: farmingTimeDisplay },
-      { label: "Estimated ready time (local)", value: readyTimeDisplay }
+      { label: "Quartz still needed", value: remainingQuartz.toLocaleString() }
     ];
   
     let tableHtml = `
@@ -209,8 +216,7 @@ const QUARTZ_RATES = {
       : "";
   
     resultsDiv.innerHTML = tableHtml + notesHtml;
-  }
-  
+  }  
   
   function handleAddOrUpdateLevel() {
     const levelInput = document.getElementById("oniLevelInput");
