@@ -301,74 +301,74 @@ const QUARTZ_RATES = {
     }
   });  
 
-  function toICSDateString(date) {
-    const pad = (n) => String(n).padStart(2, "0");
-    const year = date.getUTCFullYear();
-    const month = pad(date.getUTCMonth() + 1);
-    const day = pad(date.getUTCDate());
-    const hours = pad(date.getUTCHours());
-    const minutes = pad(date.getUTCMinutes());
-    const seconds = pad(date.getUTCSeconds());
-    return `${year}${month}${day}T${hours}${minutes}${seconds}Z`;
+function toICSDateString(date) {
+  const pad = (n) => String(n).padStart(2, "0");
+  const year = date.getUTCFullYear();
+  const month = pad(date.getUTCMonth() + 1);
+  const day = pad(date.getUTCDate());
+  const hours = pad(date.getUTCHours());
+  const minutes = pad(date.getUTCMinutes());
+  const seconds = pad(date.getUTCSeconds());
+  return `${year}${month}${day}T${hours}${minutes}${seconds}Z`;
+}
+
+function downloadCalendarEvent() {
+  if (!lastReadyTimeData || !lastReadyTimeData.readyTime) {
+    alert("Please calculate the upgrade time first.");
+    return;
   }
-  
-  function downloadCalendarEvent() {
-    if (!lastReadyTimeData || !lastReadyTimeData.readyTime) {
-      alert("Please calculate the upgrade time first.");
-      return;
-    }
-  
-    const { readyTime, currentLevel, nextLevel, hasSeasonPass, effectiveRate, remainingQuartz } = lastReadyTimeData;
-  
-    // Event start and end (30 minute window)
-    const start = readyTime;
-    const end = new Date(readyTime.getTime() + 30 * 60 * 1000);
-  
-    const dtStart = toICSDateString(start);
-    const dtEnd = toICSDateString(end);
-    const dtStamp = toICSDateString(new Date());
-  
-    const title = `Oni Seal Hall ready to upgrade (L${currentLevel} → L${nextLevel})`;
-    const descriptionLines = [
-      "Dark War Survival – Sealed Island planner reminder.",
-      "",
-      `Target: Oni Seal Hall Level ${nextLevel}`,
-      `Season Pass: ${hasSeasonPass ? "Yes (+20% production)" : "No"}`,
-      `Effective quartz production: ${effectiveRate.toLocaleString()} / hour`,
-      `Quartz still needed at time of planning: ${remainingQuartz.toLocaleString()}`,
-      "",
-      "Time is approximate and based on current planner settings."
-    ];
-  
-    const description = descriptionLines.join("\\n");
-  
-    const icsContent = [
-      "BEGIN:VCALENDAR",
-      "VERSION:2.0",
-      "PRODID:-//DWS Oni Seal Planner//EN",
-      "CALSCALE:GREGORIAN",
-      "METHOD:PUBLISH",
-      "BEGIN:VEVENT",
-      `UID:${Date.now()}@dws-oni-planner`,
-      `DTSTAMP:${dtStamp}`,
-      `DTSTART:${dtStart}`,
-      `DTEND:${dtEnd}`,
-      `SUMMARY:${title}`,
-      `DESCRIPTION:${description}`,
-      "END:VEVENT",
-      "END:VCALENDAR"
-    ].join("\\r\\n");
-  
-    const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-  
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "oni-seal-ready.ics";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }
-  
-  
+
+  const { readyTime, currentLevel, nextLevel, hasSeasonPass, effectiveRate, remainingQuartz } = lastReadyTimeData;
+
+  // Event start and end (30 minute window)
+  const start = readyTime;
+  const end = new Date(readyTime.getTime() + 30 * 60 * 1000);
+
+  const dtStart = toICSDateString(start);
+  const dtEnd = toICSDateString(end);
+  const dtStamp = toICSDateString(new Date());
+
+  const title = `Oni Seal Hall ready to upgrade (L${currentLevel} → L${nextLevel})`;
+
+  const descriptionLines = [
+    "Dark War Survival – Sealed Island planner reminder.",
+    "",
+    `Target: Oni Seal Hall Level ${nextLevel}`,
+    `Season Pass: ${hasSeasonPass ? "Yes (+20% production)" : "No"}`,
+    `Effective quartz production: ${effectiveRate.toLocaleString()} / hour`,
+    `Quartz still needed at time of planning: ${remainingQuartz.toLocaleString()}`,
+    "",
+    "Time is approximate and based on current planner settings."
+  ];
+
+  // In ICS, newlines inside a field are written as "\n"
+  const description = descriptionLines.join("\\n");
+
+  const icsContent = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//DWS Oni Seal Planner//EN",
+    "CALSCALE:GREGORIAN",
+    "METHOD:PUBLISH",
+    "BEGIN:VEVENT",
+    `UID:${Date.now()}@dws-oni-planner`,
+    `DTSTAMP:${dtStamp}`,
+    `DTSTART:${dtStart}`,
+    `DTEND:${dtEnd}`,
+    `SUMMARY:${title}`,
+    `DESCRIPTION:${description}`,
+    "END:VEVENT",
+    "END:VCALENDAR"
+  ].join("\r\n"); // 🔥 real CRLF line breaks
+
+  const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "oni-seal-ready.ics";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
