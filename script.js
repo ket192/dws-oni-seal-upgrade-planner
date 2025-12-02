@@ -48,6 +48,8 @@ const QUARTZ_RATES = {
     { level: 12, quartz: 405800, upgradeTime: "05:18:46" },
     { level: 13, quartz: 486900, upgradeTime: "05:38:28" }
   ];
+
+  let lastReadyTimeData = null; // stores info for calendar export
   
   const ONI_STORAGE_KEY = "oniSealHallLevels_v1";
   
@@ -151,6 +153,12 @@ const QUARTZ_RATES = {
     const currentQuartz = Math.max(0, parseInt(document.getElementById("currentQuartz").value, 10) || 0);
     const nextLevel = currentLevel + 1;
   
+    const calendarBtn = document.getElementById("addCalendarBtn");
+    lastReadyTimeData = null;
+    if (calendarBtn) {
+      calendarBtn.disabled = true;
+    }
+  
     if (totalRate <= 0) {
       resultsDiv.innerHTML = `
         <div class="results-notes">
@@ -179,22 +187,37 @@ const QUARTZ_RATES = {
     let notes = "";
     let farmingTimeDisplay = "-";
     let readyTimeDisplay = "-";
+    let readyTime = null;
   
     if (remainingQuartzRaw <= 0) {
       notes = "✅ You already have enough quartz to start this upgrade.";
     } else {
-      // Use effectiveRate (with Season Pass bonus if enabled)
       const hoursNeeded = remainingQuartz / effectiveRate;
       const minutesNeeded = Math.ceil(hoursNeeded * 60);
   
       farmingTimeDisplay = formatDurationFromMinutes(minutesNeeded);
   
       const now = new Date();
-      const readyTime = new Date(now.getTime() + minutesNeeded * 60 * 1000);
+      readyTime = new Date(now.getTime() + minutesNeeded * 60 * 1000);
       readyTimeDisplay = `${readyTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} on ${readyTime.toLocaleDateString()}`;
   
       const bonusText = hasSeasonPass ? " (including 20% Season Pass bonus)" : "";
       notes = `Estimated farming time: ~${farmingTimeDisplay}${bonusText}<br>If you start now: ready around ${readyTimeDisplay}`;
+  
+      // Store data for calendar export
+      lastReadyTimeData = {
+        readyTime,
+        currentLevel,
+        nextLevel,
+        hasSeasonPass,
+        totalRate,
+        effectiveRate,
+        remainingQuartz
+      };
+  
+      if (calendarBtn) {
+        calendarBtn.disabled = false;
+      }
     }
   
     const rows = [
@@ -205,7 +228,9 @@ const QUARTZ_RATES = {
       { label: "Target level", value: nextLevel },
       { label: "Current quartz stored", value: currentQuartz.toLocaleString() },
       { label: "Next level quartz requirement", value: `${requiredQuartz.toLocaleString()} (upgrade time in game: ${levelData.upgradeTime || "unknown"})` },
-      { label: "Quartz still needed", value: remainingQuartz.toLocaleString() }
+      { label: "Quartz still needed", value: remainingQuartz.toLocaleString() },
+      { label: "Estimated farming time", value: farmingTimeDisplay },
+      { label: "Estimated ready time (local)", value: readyTimeDisplay }
     ];
   
     let tableHtml = `
@@ -269,9 +294,81 @@ const QUARTZ_RATES = {
   
     document.getElementById("calculateBtn").addEventListener("click", calculateNextUpgrade);
     document.getElementById("addLevelBtn").addEventListener("click", handleAddOrUpdateLevel);
-  });
   
+    const calendarBtn = document.getElementById("addCalendarBtn");
+    if (calendarBtn) {
+      calendarBtn.addEventListener("click", downloadCalendarEvent);
+    }
+  });  
 
-
-
-
+  function toICSDateString(date) {
+    const pad = (n) => String(n).padStart(2, "0");
+    const year = date.getUTCFullYear();
+    const month = pad(date.getUTCMonth() + 1);
+    const day = pad(date.getUTCDate());
+    const hours = pad(date.getUTCHours());
+    const minutes = pad(date.getUTCMinutes());
+    const seconds = pad(date.getUTCSeconds());
+    return `${year}${month}${day}T${hours}${minutes}${seconds}Z`;
+  }
+  
+  function downloadCalendarEvent() {
+    if (!lastReadyTimeData || !lastReadyTimeData.readyTime) {
+      alert("Please calculate the upgrade time first.");
+      return;
+    }
+  
+    const { readyTime, currentLevel, nextLevel, hasSeasonPass, effectiveRate, remainingQuartz } = lastReadyTimeData;
+  
+    // Event start and end (30 minute window)
+    const start = readyTime;
+    const end = new Date(readyTime.getTime() + 30 * 60 * 1000);
+  
+    const dtStart = toICSDateString(start);
+    const dtEnd = toICSDateString(end);
+    const dtStamp = toICSDateString(new Date());
+  
+    const title = `Oni Seal Hall ready to upgrade (L${currentLevel} → L${nextLevel})`;
+    const descriptionLines = [
+      "Dark War Survival – Sealed Island planner reminder.",
+      "",
+      `Target: Oni Seal Hall Level ${nextLevel}`,
+      `Season Pass: ${hasSeasonPass ? "Yes (+20% production)" : "No"}`,
+      `Effective quartz production: ${effectiveRate.toLocaleString()} / hour`,
+      `Quartz still needed at time of planning: ${remainingQuartz.toLocaleString()}`,
+      "",
+      "Time is approximate and based on current planner settings."
+    ];
+  
+    const description = descriptionLines.join("\\n");
+  
+    const icsContent = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//DWS Oni Seal Planner//EN",
+      "CALSCALE:GREGORIAN",
+      "METHOD:PUBLISH",
+      "BEGIN:VEVENT",
+      `UID:${Date.now()}@dws-oni-planner`,
+      `DTSTAMP:${dtStamp}`,
+      `DTSTART:${dtStart}`,
+      `DTEND:${dtEnd}`,
+      `SUMMARY:${title}`,
+      `DESCRIPTION:${description}`,
+      "END:VEVENT",
+      "END:VCALENDAR"
+    ].join("\\r\\n");
+  
+    const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+  
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "oni-seal-ready.ics";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+  
+  
