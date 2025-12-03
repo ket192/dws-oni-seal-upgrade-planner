@@ -130,11 +130,14 @@ function calculateNextUpgrade() {
   let notes = "";
   let farmingTimeDisplay = "-";
   let readyTimeDisplay = "-";
+  let readyTimeUTC2Display = "-";
   let readyTime = null;
 
   if (remainingQuartzRaw <= 0) {
+    // Already enough quartz
     notes = "✅ You already have enough quartz to start this upgrade.";
   } else {
+    // Time needed
     const hoursNeeded = remainingQuartz / hourlyProduction;
     const minutesNeeded = Math.ceil(hoursNeeded * 60);
 
@@ -142,7 +145,26 @@ function calculateNextUpgrade() {
 
     const now = new Date();
     readyTime = new Date(now.getTime() + minutesNeeded * 60 * 1000);
-    readyTimeDisplay = `${readyTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} on ${readyTime.toLocaleDateString()}`;
+
+    // Local display
+    readyTimeDisplay = `${readyTime.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit"
+    })} on ${readyTime.toLocaleDateString()}`;
+
+    // UTC-2 server time display
+    // Note: "Etc/GMT+2" is UTC-2 (POSIX sign is reversed)
+    const utc2TimeString = readyTime.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "Etc/GMT+2"
+    });
+
+    const utc2DateString = readyTime.toLocaleDateString([], {
+      timeZone: "Etc/GMT+2"
+    });
+
+    readyTimeUTC2Display = `${utc2TimeString} on ${utc2DateString}`;
 
     notes = `Estimated farming time: ~${farmingTimeDisplay}<br>If you start now: ready around ${readyTimeDisplay}`;
 
@@ -168,7 +190,8 @@ function calculateNextUpgrade() {
     { label: "Next level quartz requirement", value: `${requiredQuartz.toLocaleString()} (upgrade time in game: ${levelData.upgradeTime || "unknown"})` },
     { label: "Quartz still needed", value: remainingQuartz.toLocaleString() },
     { label: "Estimated farming time", value: farmingTimeDisplay },
-    { label: "Estimated ready time (local)", value: readyTimeDisplay }
+    { label: "Estimated ready time (local)", value: readyTimeDisplay },
+    { label: "Estimated ready time (UTC-2 server)", value: readyTimeUTC2Display }
   ];
 
   let tableHtml = `
@@ -307,4 +330,3 @@ document.addEventListener("DOMContentLoaded", () => {
     calendarBtn.addEventListener("click", downloadCalendarEvent);
   }
 });
-
