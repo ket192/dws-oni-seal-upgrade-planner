@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>DWS Oni Seal Hall Planner</title>
+  <title>Oni Seal Hall Planner – Dark War Survival</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- Inter font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -18,235 +19,24 @@
       Helper to work out when you can start the next Oni Seal Hall upgrade
     </p>
 
-    <!-- Quartz Factories Section -->
-    <h2>1. Quartz Factories</h2>
-    <p>Tick each factory you have built (up to 5) and set its current level (1–30).</p>
+    <!-- 1. Total Production -->
+    <h2>1. Quartz Production</h2>
+    <p>Enter your total quartz production per hour.</p>
 
-    <div id="factoriesWrapper" class="grid">
-      <!-- Factory 1 -->
-      <div class="factory-card">
-        <label class="factory-title">
-          <input type="checkbox" id="factoryBuilt_1" checked>
-          Factory 1 built
-        </label>
-        <!-- <label for="factoryLevel_1">Factory 1 level</label> -->
-        <select id="factoryLevel_1">
-          <!-- Levels 1–30 -->
-          <option value="1" selected>Level 1</option>
-          <option value="2">Level 2</option>
-          <option value="3">Level 3</option>
-          <option value="4">Level 4</option>
-          <option value="5">Level 5</option>
-          <option value="6">Level 6</option>
-          <option value="7">Level 7</option>
-          <option value="8">Level 8</option>
-          <option value="9">Level 9</option>
-          <option value="10">Level 10</option>
-          <option value="11">Level 11</option>
-          <option value="12">Level 12</option>
-          <option value="13">Level 13</option>
-          <option value="14">Level 14</option>
-          <option value="15">Level 15</option>
-          <option value="16">Level 16</option>
-          <option value="17">Level 17</option>
-          <option value="18">Level 18</option>
-          <option value="19">Level 19</option>
-          <option value="20">Level 20</option>
-          <option value="21">Level 21</option>
-          <option value="22">Level 22</option>
-          <option value="23">Level 23</option>
-          <option value="24">Level 24</option>
-          <option value="25">Level 25</option>
-          <option value="26">Level 26</option>
-          <option value="27">Level 27</option>
-          <option value="28">Level 28</option>
-          <option value="29">Level 29</option>
-          <option value="30">Level 30</option>
-        </select>
-      </div>
-
-      <!-- Factory 2 -->
-      <div class="factory-card">
-        <label class="factory-title">
-          <input type="checkbox" id="factoryBuilt_2">
-          Factory 2 built
-        </label>
-        <!-- <label for="factoryLevel_2">Factory 2 level</label> -->
-        <select id="factoryLevel_2">
-          <option value="1" selected>Level 1</option>
-          <option value="2">Level 2</option>
-          <option value="3">Level 3</option>
-          <option value="4">Level 4</option>
-          <option value="5">Level 5</option>
-          <option value="6">Level 6</option>
-          <option value="7">Level 7</option>
-          <option value="8">Level 8</option>
-          <option value="9">Level 9</option>
-          <option value="10">Level 10</option>
-          <option value="11">Level 11</option>
-          <option value="12">Level 12</option>
-          <option value="13">Level 13</option>
-          <option value="14">Level 14</option>
-          <option value="15">Level 15</option>
-          <option value="16">Level 16</option>
-          <option value="17">Level 17</option>
-          <option value="18">Level 18</option>
-          <option value="19">Level 19</option>
-          <option value="20">Level 20</option>
-          <option value="21">Level 21</option>
-          <option value="22">Level 22</option>
-          <option value="23">Level 23</option>
-          <option value="24">Level 24</option>
-          <option value="25">Level 25</option>
-          <option value="26">Level 26</option>
-          <option value="27">Level 27</option>
-          <option value="28">Level 28</option>
-          <option value="29">Level 29</option>
-          <option value="30">Level 30</option>
-        </select>
-      </div>
-
-      <!-- Factory 3 -->
-      <div class="factory-card">
-        <label class="factory-title">
-          <input type="checkbox" id="factoryBuilt_3">
-          Factory 3 built
-        </label>
-        <!-- <label for="factoryLevel_3">Factory 3 level</label> -->
-        <select id="factoryLevel_3">
-          <option value="1" selected>Level 1</option>
-          <option value="2">Level 2</option>
-          <option value="3">Level 3</option>
-          <option value="4">Level 4</option>
-          <option value="5">Level 5</option>
-          <option value="6">Level 6</option>
-          <option value="7">Level 7</option>
-          <option value="8">Level 8</option>
-          <option value="9">Level 9</option>
-          <option value="10">Level 10</option>
-          <option value="11">Level 11</option>
-          <option value="12">Level 12</option>
-          <option value="13">Level 13</option>
-          <option value="14">Level 14</option>
-          <option value="15">Level 15</option>
-          <option value="16">Level 16</option>
-          <option value="17">Level 17</option>
-          <option value="18">Level 18</option>
-          <option value="19">Level 19</option>
-          <option value="20">Level 20</option>
-          <option value="21">Level 21</option>
-          <option value="22">Level 22</option>
-          <option value="23">Level 23</option>
-          <option value="24">Level 24</option>
-          <option value="25">Level 25</option>
-          <option value="26">Level 26</option>
-          <option value="27">Level 27</option>
-          <option value="28">Level 28</option>
-          <option value="29">Level 29</option>
-          <option value="30">Level 30</option>
-        </select>
-      </div>
-
-      <!-- Factory 4 -->
-      <div class="factory-card">
-        <label class="factory-title">
-          <input type="checkbox" id="factoryBuilt_4">
-          Factory 4 built
-        </label>
-        <!-- <label for="factoryLevel_4">Factory 4 level</label> -->
-        <select id="factoryLevel_4">
-          <option value="1" selected>Level 1</option>
-          <option value="2">Level 2</option>
-          <option value="3">Level 3</option>
-          <option value="4">Level 4</option>
-          <option value="5">Level 5</option>
-          <option value="6">Level 6</option>
-          <option value="7">Level 7</option>
-          <option value="8">Level 8</option>
-          <option value="9">Level 9</option>
-          <option value="10">Level 10</option>
-          <option value="11">Level 11</option>
-          <option value="12">Level 12</option>
-          <option value="13">Level 13</option>
-          <option value="14">Level 14</option>
-          <option value="15">Level 15</option>
-          <option value="16">Level 16</option>
-          <option value="17">Level 17</option>
-          <option value="18">Level 18</option>
-          <option value="19">Level 19</option>
-          <option value="20">Level 20</option>
-          <option value="21">Level 21</option>
-          <option value="22">Level 22</option>
-          <option value="23">Level 23</option>
-          <option value="24">Level 24</option>
-          <option value="25">Level 25</option>
-          <option value="26">Level 26</option>
-          <option value="27">Level 27</option>
-          <option value="28">Level 28</option>
-          <option value="29">Level 29</option>
-          <option value="30">Level 30</option>
-        </select>
-      </div>
-
-      <!-- Factory 5 -->
-      <div class="factory-card">
-        <label class="factory-title">
-          <input type="checkbox" id="factoryBuilt_5">
-          Factory 5 built
-        </label>
-        <!-- <label for="factoryLevel_5">Factory 5 level</label> -->
-        <select id="factoryLevel_5">
-          <option value="1" selected>Level 1</option>
-          <option value="2">Level 2</option>
-          <option value="3">Level 3</option>
-          <option value="4">Level 4</option>
-          <option value="5">Level 5</option>
-          <option value="6">Level 6</option>
-          <option value="7">Level 7</option>
-          <option value="8">Level 8</option>
-          <option value="9">Level 9</option>
-          <option value="10">Level 10</option>
-          <option value="11">Level 11</option>
-          <option value="12">Level 12</option>
-          <option value="13">Level 13</option>
-          <option value="14">Level 14</option>
-          <option value="15">Level 15</option>
-          <option value="16">Level 16</option>
-          <option value="17">Level 17</option>
-          <option value="18">Level 18</option>
-          <option value="19">Level 19</option>
-          <option value="20">Level 20</option>
-          <option value="21">Level 21</option>
-          <option value="22">Level 22</option>
-          <option value="23">Level 23</option>
-          <option value="24">Level 24</option>
-          <option value="25">Level 25</option>
-          <option value="26">Level 26</option>
-          <option value="27">Level 27</option>
-          <option value="28">Level 28</option>
-          <option value="29">Level 29</option>
-          <option value="30">Level 30</option>
-        </select>
+    <div class="grid">
+      <div>
+        <label for="hourlyProduction">Total Quartz Produced Per Hour</label>
+        <input type="number" id="hourlyProduction" min="0" step="1" placeholder="e.g. 43200">
       </div>
     </div>
 
-    <h2>2. Season Pass</h2>
-    <p>Tick this if the Season Pass has been purchased for extra +20% quartz production.</p>
-    
-    <div class="season-pass-row">
-      <label class="season-pass-label">
-        <input type="checkbox" id="seasonPass">
-        Season Pass purchased (+20% quartz production)
-      </label>
-    </div>
-
-    <!-- Oni Seal Hall Status -->
-    <h2>3. Oni Seal Hall Status</h2>
+    <!-- 2. Oni Seal Hall Status -->
+    <h2>2. Oni Seal Hall status</h2>
     <div class="grid">
       <div>
         <label for="currentLevel">Current Oni Seal Hall level</label>
         <input type="number" id="currentLevel" min="0" max="35" placeholder="0">
-        <span class="note">Use 0 if you have not built it yet.</span>
+        <span class="note">Use 0 if you have not built it yet. Maximum level is 35.</span>
       </div>
       <div>
         <label for="currentQuartz">Current quartz in storage</label>
@@ -255,13 +45,13 @@
       </div>
     </div>
 
-    <button id="calculateBtn">Calculate next upgrade timing</button>
-    <button id="addCalendarBtn" disabled>Add to calendar</button>
-    
-    <div id="results" class="results" style="display:none;"></div>    
+    <button id="calculateBtn">Calculate</button>
+    <button id="addCalendarBtn" disabled>Add to Calendar</button>
 
-    <!-- Oni Seal Hall Requirements Editor -->
-    <h2>4. Oni Seal Hall requirements</h2>
+    <div id="results" class="results" style="display:none;"></div>
+
+    <!-- 3. Oni Seal Hall Requirements Editor -->
+    <h2>3. Oni Seal Hall requirements</h2>
     <p>
       Add or update Oni Seal Hall upgrade requirements as you discover them.
       <br>NB: This is stored in your browser so you do not have to re-enter it every time
@@ -271,25 +61,20 @@
     <div class="inline-form">
       <div>
         <label for="oniLevelInput">Level</label>
-        <input type="number" id="oniLevelInput" min="1" max="30" placeholder="e.g. 3">
+        <input type="number" id="oniLevelInput" min="1" max="35" placeholder="e.g. 3">
       </div>
       <div>
         <label for="oniQuartzInput">Quartz required</label>
         <input type="number" id="oniQuartzInput" min="0" placeholder="e.g. 16800">
       </div>
       <div>
-        <label for="oniTimeInput">Upgrade time (hh:mm)</label>
-        <input type="text" id="oniTimeInput" placeholder="e.g. 12:00:00">
+        <label for="oniTimeInput">Upgrade time (hh:mm:ss)</label>
+        <input type="text" id="oniTimeInput" placeholder="e.g. 01:35:46">
       </div>
       <div style="flex:0 0 auto;">
-        <button id="addLevelBtn">Add / Update level</button>
+        <button id="addLevelBtn">Add/Update</button>
       </div>
     </div>
-
-    <p class="note">
-      Example data already loaded: Level 1 → 5600 quartz (00:00:00),
-      Level 2 → 11200 quartz (00:08:38). Upgrade times may vary, update to suit.
-    </p>
 
     <table>
       <thead>
@@ -309,11 +94,11 @@
       level. For example, if you set current level to 1, it will look up the cost
       for level 2.
     </p>
-  </div>
 
-  <footer class="footer">
-    Made by <span class="highlight">#192 [ZLD] 戰龍Ket</span>
-  </footer>
+    <footer class="footer">
+      Made by <span class="highlight">#192 [ZLD] 戰龍Ket</span>
+    </footer>
+  </div>
 
   <script src="script.js"></script>
 </body>
