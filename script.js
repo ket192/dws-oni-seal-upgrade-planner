@@ -18,7 +18,8 @@ let oniLevels = [
   { level: 16, quartz: 771300, upgradeTime: "07:51:05" },
   { level: 17, quartz: 848400, upgradeTime: "08:19:54" },
   { level: 18, quartz: 933300, upgradeTime: "08:51:37" },
-  { level: 19, quartz: 1026600, upgradeTime: "09:26:29" }
+  { level: 19, quartz: 1026600, upgradeTime: "09:26:29" },
+  { level: 20, quartz: 1117300, upgradeTime: "10:50:57" }
 ];
 
 const ONI_STORAGE_KEY = "oniSealHallLevels_v1";
@@ -333,5 +334,6 @@ document.addEventListener("DOMContentLoaded", () => {
     calendarBtn.addEventListener("click", downloadCalendarEvent);
   }
 });
+
 
 
